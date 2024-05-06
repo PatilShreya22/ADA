@@ -1,0 +1,264 @@
+//C program to implement linear search
+#include <stdio.h>
+#include<stdlib.h>
+#include <time.h>
+void linearSearch(int num,int key,int arr[]){
+    int i,flag=0;
+    for (i = 0; i < num ; i++)
+    {
+        if (key == arr[i] )
+        {
+            printf("element at index %d",i);
+            flag=1;
+        }
+    }
+    if(flag==0){
+        printf("element not found\n");
+    }
+}
+void main()
+{  
+
+    int num;
+    int i,  key;
+    
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    int arr[num];
+    
+    printf("\nEnter all the elements:");
+    for (i = 0; i < num; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    printf("\nEnter the key  to be searched: ");
+    scanf("%d", &key);
+
+    clock_t start, end;
+    start = clock();
+    linearSearch(num,key,arr);
+    end = clock();
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("Time taken: %f seconds\n", time_taken);
+    
+
+}
+
+OUTPUT:
+
+CASE1:
+Enter number of elements : 5
+Enter all the elements:1 2 3 4 5 
+Enter the key  to be searched: 84
+element not found
+Time taken: 0.000021 seconds
+
+CASE2:
+Enter number of elements : 10
+Enter all the elements:1 5 3 9 6 25 45 85 63 12
+Enter the key  to be searched: 12
+element at index 9
+Time taken: 0.000004 seconds
+
+//C program to implement binary search
+#include <stdio.h>
+#include <time.h>
+
+int binarySearch(int arr[], int l, int r, int x)
+{
+    while (l <= r) {
+        int m = l + (r - l) / 2;
+
+        if (arr[m] == x)
+            return m;
+
+        if (arr[m] < x)
+            l = m + 1;
+
+        else
+            r = m - 1;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    int num;
+    int i, j, temp, x;
+
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    int arr[num];
+
+    printf("\nEnter all the elements:");
+
+    for (i = 0; i < num; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("\nEnter the key  to be searched: ");
+    scanf("%d", &x);
+
+    // Bubble sort implementation
+    for (i = 0; i < num - 1; i++) {
+        for (j = 0; j < num - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    
+    printf("\nSorted Array:");
+    for(i=0;i<num;i++){
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+    
+    clock_t start, end;
+    start = clock();
+    
+    int result = binarySearch(arr, 0, num-1, x);
+    if(result==-1){
+        printf("\nElement is not present in array");
+    }
+    else{
+        printf("\nElement is present at index %d",result); 
+    }
+    
+    end = clock();
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("\nTime taken: %f seconds\n", time_taken);
+    
+    return 0;
+}
+
+OUTPUT:
+
+CASE1:
+Enter number of elements : 5
+Enter all the elements:1 2 5 6 3
+Enter the key  to be searched: 2
+Sorted Array:1 2 3 5 6 
+Element is present at index 1
+Time taken: 0.000010 seconds
+
+CASE2:
+Enter number of elements : 10
+Enter all the elements:1 2 36 95 65 45 85 63 45 10
+Enter the key  to be searched: 89
+Sorted Array:1 2 10 36 45 45 63 65 85 95 
+Element is not present in array
+Time taken: 0.000011 seconds
+
+//C program to implement bubble sort
+#include<stdio.h>
+#include<time.h>
+
+void bubble_sort(int arr[], int n) {  
+  int i, j;  
+  for (i = 0; i < n - 1; i++) {  
+    for (j = 0; j < n - i - 1; j++) {  
+      if (arr[j] > arr[j + 1]) {  
+        int temp = arr[j];  
+        arr[j] = arr[j + 1];  
+        arr[j + 1] = temp;  
+      }  
+    }  
+  }  
+} 
+void main(){
+    int num;
+    int i; 
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    int arr[num];
+
+    printf("\nEnter all the elements:");
+
+    for (i = 0; i < num; i++)
+
+    {
+        scanf("%d", &arr[i]);
+
+    }
+     
+    clock_t start, end;
+    start = clock();
+    
+    bubble_sort(arr,num);
+    printf("\nSorted array:");
+    for(i=0;i<num;i++){
+        printf("%d ",arr[i]);
+    }
+    
+    end = clock();
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("\nTime taken: %f seconds\n", time_taken);
+}
+
+OUTPUT:
+Enter number of elements : 8
+Enter all the elements:78 64 12 45 21 87 95 62
+Sorted array:12 21 45 62 64 78 87 95 
+Time taken: 0.000017 seconds
+
+//C program to implement selection sort
+#include<stdio.h>
+#include<time.h>
+
+void selection(int arr[], int n)  
+{  
+    int i, j, small; 
+    for (i = 0; i < n-1; i++)    
+    {  
+        small = i;  
+          
+        for (j = i+1; j < n; j++)  
+        if (arr[j] < arr[small])  
+            small = j;  
+
+    int temp = arr[small];  
+    arr[small] = arr[i];  
+    arr[i] = temp;  
+    }  
+}  
+
+void main(){
+    int num;
+    int i; 
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    int arr[num];
+
+    printf("\nEnter all the elements:");
+
+    for (i = 0; i < num; i++)
+
+    {
+        scanf("%d", &arr[i]);
+
+    }
+    clock_t start,end;
+    start=clock();
+    
+    selection(arr,num);
+    printf("\nSorted array:");
+    for(i=0;i<num;i++){
+        printf("%d ",arr[i]);
+    }
+    
+    end=clock();
+    
+    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("\nTime taken: %f seconds\n", time_taken);
+}
+
+OUTPUT:
+Enter number of elements : 10
+Enter all the elements:85 96 32 45 67 23 95 63 100 25 
+Sorted array:23 25 32 45 63 67 85 95 96 100 
+Time taken: 0.000022 seconds
