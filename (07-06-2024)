@@ -1,0 +1,127 @@
+//C program to implement merge sort
+#include <stdio.h>
+int a[20],n;
+void simple_sort(int [],int,int,int);
+void merge_sort(int[],int,int);
+
+int main()
+{
+    int i;
+    printf("Enter the no. of elements:");
+    scanf("%d",&n);
+    printf("Enter the array elements:");
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    merge_sort(a,0,n-1);
+    printf("Sorrted array:");
+    for(i=0;i<n;i++){
+        printf("%d ",a[i]);
+    }
+    return 0;
+}
+
+void merge_sort(int a[],int low, int high){
+    if(low<high){
+        int mid=(low+high)/2;
+        merge_sort(a,low,mid);
+        merge_sort(a,mid+1,high);
+        simple_sort(a,low,mid,high);
+    }
+}
+
+void simple_sort(int a[],int low, int mid, int high){
+    int i=low,j=mid+1,k=low;
+    int c[n];
+    while(i<=mid && j<=high){
+        if(a[i]<a[j]){   
+            c[k++]=a[i];
+            i++;
+        }else{
+            c[k++]=a[j];
+            j++;
+        }
+    }
+    
+    while(i<=mid){
+        c[k++]=a[i];
+        i++;
+    }
+    while(j<=high){
+        c[k++]=a[j];
+        j++;
+    }
+    for(i=low;i<=high;i++){
+        a[i]=c[i];
+    }
+}
+
+OUTPUT:
+Enter the no. of elements:5
+Enter the array elements:8 9 6 2 3
+Sorrted array:2 3 6 8 9
+
+//C program to implement quick sort
+#include <stdio.h>
+int a[20],n;
+int partition(int [],int, int);
+void quick_sort(int [],int,int);
+void swap(int*,int*);
+int main()
+{
+    int i;
+    printf("Enter the no. of elements:");
+    scanf("%d",&n);
+    printf("Enter the array elements:");
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    quick_sort(a,0,n-1);
+    printf("Sorrted array:");
+    for(i=0;i<n;i++){
+        printf("%d ",a[i]);
+    }
+
+    return 0;
+}
+
+void swap(int *a,int *b){
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+}
+
+void quick_sort(int a[],int low,int high){
+    if(low<high){
+        int mid=partition(a,low,high);
+        quick_sort(a,low,mid-1);
+        quick_sort(a,mid+1,high);
+    }
+}
+
+int partition(int a[],int low,int high){
+    int pivot=a[low];
+    int i=low;
+    int j=high+1;
+    
+    while(i<=j){
+        do{
+            i=i+1;
+        }while(a[i]<pivot && i<=high);
+        
+        do{
+            j=j-1;
+        }while(a[j]>pivot && j>=low);
+        if(i<j){
+            swap(&a[i],&a[j]);
+        }
+    }
+    
+    swap(&a[j],&a[low]);
+    return j;
+}
+
+OUTPUT:
+Enter the no. of elements:8
+Enter the array elements:5 3 1 9 8 2 4 7
+Sorrted array:1 2 3 4 5 7 8 9
