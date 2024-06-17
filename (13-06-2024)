@@ -1,0 +1,272 @@
+//C program to implement warshall's algorithm
+#include <stdio.h>
+int a[10][10],P[10][10],n;
+void warshall(int [][10],int);
+int main()
+{
+    printf("Enter the no. of vertices:");
+    scanf("%d",&n);
+    printf("Enter the adjacent matrix:\n");
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            scanf("%d",&a[i][j]);
+        }
+    }
+    warshall(a,n);
+    printf("Transitive Matrix/ Path Matrix:\n");
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            printf("%d ",P[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+void warshall(int a[][10],int n){
+    int i,j,k;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            P[i][j]=a[i][j];
+        }
+    }
+    
+    for(k=0;k<n;k++){
+        for(i=0;i<n;i++){
+            for(j=0;j<n;j++){
+                if(P[i][j]==0 && (P[i][k]==1 && P[k][j]==1)){
+                    P[i][j]=1;
+                }
+            }
+        }
+    }
+    
+}
+
+OUTPUT:
+Enter the no. of vertices:4
+Enter the adjacent matrix:
+0 1 0 0
+0 0 0 1
+0 0 0 0
+1 0 1 0
+Transitive Matrix/ Path Matrix:
+1 1 1 1 
+1 1 1 1 
+0 0 0 0 
+1 1 1 1
+                 
+//C program to implement floyd's algorithm
+#include <stdio.h>
+int a[10][10],D[10][10],n;
+void floyd(int [][10],int);
+int min(int,int);
+int main()
+{
+    printf("Enter the no. of vertices:");
+    scanf("%d",&n);
+    printf("Enter the cost adjacency matrix:\n");
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            scanf("%d",&a[i][j]);
+        }
+    }
+    floyd(a,n);
+    printf("Distance Matrix:\n");
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            printf("%d ",D[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+void floyd(int a[][10],int n){
+    int i,j,k;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            D[i][j]=a[i][j];
+        }
+    }
+    
+    for(k=0;k<n;k++){
+        for(i=0;i<n;i++){
+            for(j=0;j<n;j++){
+                D[i][j]=min(D[i][j],(D[i][k]+D[k][j]));
+                }
+            }
+        }
+    }
+
+
+int min(int a,int b){
+    if(a<b){
+        return a;
+    }else{
+        return b;
+    }
+}
+
+OUTPUT:
+Enter the no. of vertices:4
+Enter the cost adjacency matrix:
+0 99 3 99
+2 0 99 99
+99 6 0 1
+7 99 99 0
+Distance Matrix:
+0 9 3 4 
+2 0 5 6 
+8 6 0 1 
+7 16 10 0
+
+
+//C program to implement Presorting 
+#include <stdio.h>
+int a[20],n;
+void simple_sort(int [],int,int,int);
+void merge_sort(int[],int,int);
+int presorting(int[],int);
+int main()
+{
+    int i,result;
+    printf("Enter the no. of elements:");
+    scanf("%d",&n);
+    printf("Enter the array elements:");
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    result=presorting(a,n);
+    if(result==1){
+        printf("Unique Array elements");
+    }else{
+        printf("Duplicate Array elements");
+    }
+    return 0;
+}
+
+void merge_sort(int a[],int low, int high){
+    if(low<high){
+        int mid=(low+high)/2;
+        merge_sort(a,low,mid);
+        merge_sort(a,mid+1,high);
+        simple_sort(a,low,mid,high);
+    }
+}
+
+void simple_sort(int a[],int low, int mid, int high){
+    int i=low,j=mid+1,k=low;
+    int c[n];
+    while(i<=mid && j<=high){
+        if(a[i]<a[j]){   
+            c[k++]=a[i];
+            i++;
+        }else{
+            c[k++]=a[j];
+            j++;
+        }
+    }
+    
+    while(i<=mid){
+        c[k++]=a[i];
+        i++;
+    }
+    while(j<=high){
+        c[k++]=a[j];
+        j++;
+    }
+    for(i=low;i<=high;i++){
+        a[i]=c[i];
+    }
+}
+
+int presorting(int a[],int n){
+    merge_sort(a,0,n-1);
+    int i;
+    for(i=0;i<n-2;i++){
+        if(a[i]==a[i+1]){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+OUTPUT:
+CASE1:
+Enter the no. of elements:8
+Enter the array elements:25 03 96 78 65 10 65 25
+Duplicate Array elements
+
+CASE2:
+Enter the no. of elements:5
+Enter the array elements:12 56 98 74 32
+Unique Array elements
+
+//C program to implement knapsack problem in dynamic programming
+#include <stdio.h>
+int n,m,w[10],p[10],v[10][10];
+void knapsack(int,int,int[],int[]);
+int max(int,int);
+int main()
+{
+    int i,j;
+    printf("Enter the no. of items:");
+    scanf("%d",&n);
+    printf("Enter the capacity of knapsack:");
+    scanf("%d",&m);
+    printf("Enter weights:");
+    for(i=0;i<n;i++){
+        scanf("%d",&w[i]);
+    }
+    printf("Enter profits:");
+    for(i=0;i<n;i++){
+        scanf("%d",&p[i]);
+    }
+    knapsack(n,m,w,p);
+    printf("Optimal Solution:\n");
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            printf("%d ",v[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+void knapsack(int n, int m, int w[],int p[]){
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<m;j++){
+            if(i==0 || j==0){
+                v[i][j]=0;
+            }else if(w[i]>j){
+                v[i][j]=v[i-1][j];
+            }else{
+                v[i][j]=max(v[i-1][j],((v[i-1][j-w[i]])+p[i]));
+            }
+        }
+    }
+}
+
+int max(int a,int b){
+    if(a>b){
+        return a;
+    }else{
+        return b;
+    }
+    
+}
+
+OUTPUT:
+Enter the no. of items:4
+Enter the capacity of knapsack:5
+Enter weights:2 1 3 2
+Enter profits:12 10 20 15
+Optimal Solution:
+0 0 0 0 
+0 10 10 10 
+0 10 10 20 
+0 10 15 25
