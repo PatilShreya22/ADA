@@ -1,0 +1,109 @@
+//C program to implement horspool algorithm
+#include<stdio.h>
+#include<string.h>
+
+char P[100], T[100];
+int S[200];
+
+void shiftTable(char[], int[]);
+int horSpool(char[], char[]);
+
+int main(){
+    printf("Enter the text string: ");
+    fgets(T, sizeof(T), stdin);
+    T[strcspn(T, "\n")] = 0; // remove newline character
+
+    printf("Enter the pattern string: ");
+    fgets(P, sizeof(P), stdin);
+    P[strcspn(P, "\n")] = 0; // remove newline character
+
+    int result = horSpool(T, P);
+    if(result == -1){
+        printf("\nPattern not found\n");
+    } else {
+        printf("Pattern found at position %d\n", result);
+    }
+    return 0;
+}
+
+void shiftTable(char P[], int S[]){
+    int m = strlen(P);
+    int i;
+    for(i = 0; i < 128; i++){
+        S[i] = m;
+    }
+    for(i = 0; i < m - 1; i++){
+        S[(int)P[i]] = m - 1 - i;
+    }
+}
+
+int horSpool(char T[], char P[]){
+    shiftTable(P, S);
+    int n = strlen(T);
+    int m = strlen(P);
+    int i = m - 1;
+
+    while(i <= n - 1){
+        int k = 0;
+        while(k <= m - 1 && T[i - k] == P[m - 1 - k]){
+            k++;
+        }
+        if(k == m){
+            return i - m + 1;
+        }
+
+        i = i + S[(int)T[i]];
+    }
+
+    return -1;
+}
+
+OUTPUT:
+Enter the text string: jim saw me in barber shop
+Enter the pattern string: barber
+Pattern found at position 14
+
+Enter the text string: jim saw me in barber shop
+Enter the pattern string: see
+
+Pattern not found
+
+//C program to implement heapify
+#include<stdio.h>
+int a[10],n;
+void heapify(int[],int);
+
+int main(){
+    printf("Enter the number of array elements:");
+    scanf("%d",&n);
+    int i;
+    printf("Enter array elements:");
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    heapify(a,n);
+    printf("Array elements:");
+    for(i=0;i<n;i++){
+        printf(" %d",a[i]);
+    }
+    return 0;
+}
+
+void heapify(int a[],int n){
+    int k;
+    for(k=1;k<n;k++){
+        int key=a[k];
+        int c=k;
+        int p=(c-1)/2;
+        while(c>0 && key>a[p]){
+            a[c]=a[p];
+            c=p;
+            p=(c-1)/2;
+        }
+        a[c]=key;
+    }
+}
+OUTPUT:
+Enter the number of array elements:7
+Enter array elements:50 25 30 75 100 45 80
+Array elements: 100 75 80 25 50 30 45
