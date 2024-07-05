@@ -1,0 +1,312 @@
+//C program to implement prim's algorithm
+#include <stdio.h>
+
+int cost[10][10], n, t[10][2], sum;
+
+void prims(int cost[10][10], int n);
+
+int main() {
+    int i, j;
+    
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    printf("Enter the cost adjacency matrix:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+    
+    prims(cost, n);
+    
+    printf("Edges of the minimal spanning tree:\n");
+    for (i = 0; i < n - 1; i++) {
+        printf("(%d, %d) ", t[i][0], t[i][1]);
+    }
+    printf("\nSum of minimal spanning tree: %d\n", sum);
+    
+    return 0;
+}
+
+void prims(int cost[10][10], int n) {
+    int i, j, u, v;
+    int min, source;
+    int p[10], d[10], s[10];
+    
+    min = 999;
+    source = 0;
+    
+    // Initialize arrays
+    for (i = 0; i < n; i++) {
+        d[i] = cost[source][i];
+        s[i] = 0;
+        p[i] = source;
+    }
+    
+    s[source] = 1;
+    sum = 0;
+    int k = 0;
+    
+    // Find MST
+    for (i = 0; i < n - 1; i++) {
+        min = 999;
+        u = -1;
+        
+        // Find the vertex with minimum distance to the MST
+        for (j = 0; j < n; j++) {
+            if (s[j] == 0 && d[j] < min) {
+                min = d[j];
+                u = j;
+            }
+        }
+        
+        if (u != -1) {
+            // Add edge to MST
+            t[k][0] = u;
+            t[k][1] = p[u];
+            k++;
+            sum += cost[u][p[u]];
+            s[u] = 1;
+            
+            // Update distances
+            for (v = 0; v < n; v++) {
+                if (s[v] == 0 && cost[u][v] < d[v]) {
+                    d[v] = cost[u][v];
+                    p[v] = u;
+                }
+            }
+        }
+    }
+}
+OUTPUT:
+
+
+#include <stdio.h>
+
+int cost[10][10], n, t[10][2], sum;
+
+void kruskal(int cost[10][10], int n);
+int find(int parent[10], int i);
+
+int main() {
+    int i, j;
+    
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    printf("Enter the cost adjacency matrix:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+    
+    kruskal(cost, n);
+    
+    printf("Edges of the minimal spanning tree:\n");
+    for (i = 0; i < n - 1; i++) {
+        printf("(%d, %d) ", t[i][0], t[i][1]);
+    }
+    printf("\nSum of minimal spanning tree: %d\n", sum);
+    
+    return 0;
+}
+
+void kruskal(int cost[10][10], int n) {
+    int min, u, v, count, k;
+    int parent[10];
+    
+    k = 0;
+    sum = 0;
+    
+    // Initialize parent array for Union-Find
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+    }
+    
+    count = 0;
+    while (count < n - 1) {
+        min = 999;
+        u = -1;
+        v = -1;
+        
+        // Find the minimum edge
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (find(parent, i) != find(parent, j) && cost[i][j] < min) {
+                    min = cost[i][j];
+                    u = i;
+                    v = j;
+                }
+            }
+        }
+        
+        // Perform Union operation
+        int root_u = find(parent, u);
+        int root_v = find(parent, v);
+        
+        if (root_u != root_v) {
+            parent[root_u] = root_v;
+            t[k][0] = u;
+            t[k][1] = v;
+            sum += min;
+            k++;
+            count++;
+        }
+    }
+}
+
+int find(int parent[10], int i) {
+    while (parent[i] != i) {
+        i = parent[i];
+    }
+    return i;
+}
+
+OUTPUT:
+
+
+// C program to implement Dijkstra's algorithm
+
+#include <stdio.h>
+
+int cost[10][10], n, result[10][2], weight[10];
+
+void dijkstras(int [][10], int );
+
+int main()
+{
+    int i, j, s;
+    
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    printf("Enter the cost adjacency matrix:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+    
+    printf("Enter the source vertex: ");
+    scanf("%d", &s);
+    dijkstras(cost, s);
+    
+    printf("Path:\n");
+    for (i = 1; i < n; i++) {
+        printf("(%d, %d) with weight %d ", result[i][0], result[i][1], weight[result[i][1]]);
+    }
+    return 0;
+}
+
+void dijkstras(int cost[][10], int s){
+    int d[10], p[10], visited[10];
+    int i, j, min, u, v, k;
+    for(i = 0; i < 10; i++){
+        d[i] = 999;
+        visited[i] = 0;
+        p[i] = s;
+    }
+    d[s] = 0;
+    visited[s] = 1;
+    for(i = 0; i < n; i++){
+        min = 999;
+        u = 0;
+        for(j = 0; j < n; j++){
+            if(visited[j] == 0){
+                if(d[j] < min){
+                    min = d[j];
+                    u = j;
+                }
+            }
+        }
+        visited[u] = 1;
+        
+        for(v = 0; v < n; v++){
+            if(visited[v] == 0 && (d[u] + cost[u][v] < d[v])){
+                d[v] = d[u] + cost[u][v];
+                p[v] = u;
+            }
+        }
+    }
+    for(i = 0; i < n; i++){
+        result[i][0] = p[i];
+        result[i][1] = i;
+        weight[i] = d[i];
+    }
+}
+
+OUTPUT:
+Enter the number of vertices: 4
+Enter the cost adjacency matrix:
+0 1 5 2
+1 0 99 99                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+5 99 0 3
+2 99 3 0
+Enter the source vertex: 0
+Path:
+(0, 1) with weight 1 (0, 2) with weight 5 (0, 3) with weight 2 
+
+#include <stdio.h>
+
+void knapsack(int n, int p[], int w[], int W) {
+    int used[n];
+    for (int i = 0; i < n; ++i)
+        used[i] = 0;
+    int cur_w = W;
+    float tot_v = 0.0;
+    int i, maxi;
+    while (cur_w > 0) {
+        maxi = -1;
+        for (i = 0; i < n; ++i)
+            if ((used[i] == 0) &&
+                ((maxi == -1) || ((float)w[i]/p[i] > (float)w[maxi]/p[maxi])))
+                maxi = i;
+        used[maxi] = 1;
+        if (w[maxi] <= cur_w) {
+            cur_w -= w[maxi];
+            tot_v += p[maxi];
+            printf("Added object %d (%d, %d) completely in the bag. Space left: %d.\n", maxi + 1, w[maxi], p[maxi], cur_w);
+        } else {
+            int taken = cur_w;
+            cur_w = 0;
+            tot_v += (float)taken/p[maxi] * p[maxi];
+            printf("Added %d%% (%d, %d) of object %d in the bag.\n", (int)((float)taken/w[maxi] * 100), w[maxi], p[maxi], maxi + 1);
+        }
+    }
+    printf("Filled the bag with objects worth %.2f.\n", tot_v);
+}
+
+int main() {
+    int n, W;
+    printf("Enter the number of objects: ");
+    scanf("%d", &n);
+    int p[n], w[n];
+    printf("Enter the profits of the objects: ");
+    for(int i = 0; i < n; i++){
+        scanf("%d", &p[i]);
+    }
+    printf("Enter the weights of the objects: ");
+    for(int i = 0; i < n; i++){
+        scanf("%d", &w[i]);
+    }
+    printf("Enter the maximum weight of the bag: ");
+    scanf("%d", &W);
+
+    knapsack(n, p, w, W);
+
+    return 0;
+}
+
+OUTPUT:
+Enter the number of objects: 7
+Enter the profits of the objects: 5 10 15 7 8 9 4
+Enter the weights of the objects: 1 3 5 4 1 3 2
+Enter the maximum weight of the bag: 15
+Added object 4 (4, 7) completely in the bag. Space left: 11.
+Added object 7 (2, 4) completely in the bag. Space left: 9.
+Added object 3 (5, 15) completely in the bag. Space left: 4.
+Added object 6 (3, 9) completely in the bag. Space left: 1.
+Added 33% (3, 10) of object 2 in the bag.
+Filled the bag with objects worth 36.00.
